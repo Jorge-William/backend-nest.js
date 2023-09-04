@@ -15,14 +15,15 @@ import { Task } from './task.model';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Task | undefined> {
+    console.log(id);
+    return this.taskService.findOne(id);
+  }
+
   @Get()
   async findAll(): Promise<Task[]> {
     return this.taskService.findAll();
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Task | undefined> {
-    return this.taskService.findOne(+id);
   }
 
   @Post()
@@ -35,11 +36,11 @@ export class TaskController {
     @Param('id') id: string,
     @Body() taskData: Task,
   ): Promise<Task> | undefined {
-    return this.taskService.update(+id, taskData);
+    return this.taskService.update(id, taskData);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<void> {
-    this.taskService.remove(+id);
+    this.taskService.remove(id);
   }
 }
