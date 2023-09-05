@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Task } from './task.model';
-import { v4 as uuid } from 'uuid';
 import { db } from 'database/fakeDatabase';
 import { NotFoundException } from '@nestjs/common';
 
@@ -26,7 +25,9 @@ export class TaskService {
   }
 
   create(task: Task): Task {
-    task.id = uuid();
+    const data = this.tasks;
+
+    task.id = data.length + 1;
     this.tasks.push(task);
     return task;
   }

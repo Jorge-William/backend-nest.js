@@ -21,8 +21,6 @@ export class TaskController {
   }
   @Get(':id')
   async findOne(@Query('id') id: number): Promise<Task[]> {
-    console.log(typeof id);
-
     return await this.taskService.findOne(id);
   }
 
