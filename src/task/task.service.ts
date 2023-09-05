@@ -33,13 +33,22 @@ export class TaskService {
   }
 
   update(id: number, updatedTask: Task): Task | undefined {
-    const taskIndex = this.tasks.findIndex((task) => task.id === id);
+    console.log(id);
+    console.log(updatedTask);
+
+    const taskIndex = this.tasks.findIndex((task) => task.id == id);
     if (taskIndex === -1) {
       return undefined;
     }
 
-    this.tasks[taskIndex] = updatedTask;
-    return updatedTask;
+    const updatedTaskWithExistingProperties = {
+      ...this.tasks[taskIndex],
+      ...updatedTask,
+    };
+
+    this.tasks[taskIndex] = updatedTaskWithExistingProperties;
+
+    return updatedTaskWithExistingProperties;
   }
 
   remove(idNumber: number): void {
@@ -49,8 +58,5 @@ export class TaskService {
       return obj.id != idNumber;
     });
     this.tasks = result;
-    console.log();
-
-    // this.tasks = data.pop((task) => task.id !== id);
   }
 }

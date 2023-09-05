@@ -2,10 +2,10 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Query,
   Body,
+  Patch,
 } from '@nestjs/common';
 
 import { TaskService } from './task.service';
@@ -29,7 +29,7 @@ export class TaskController {
     return this.taskService.create(taskData);
   }
 
-  @Put(':id')
+  @Patch(':id')
   async update(
     @Query('id') id: number,
     @Body() taskData: Task,
@@ -42,34 +42,3 @@ export class TaskController {
     this.taskService.remove(id);
   }
 }
-
-// @Get(':id')
-// async findOne(@Query('id') id: string): Promise<Task | undefined> {
-//   console.log('oi');
-
-//   return this.taskService.findOne(+id);
-// }
-
-// @Get('/all')
-// async findAll(): Promise<Task[]> {
-//   console.log('Aqui');
-
-//   return this.taskService.findAll();
-// }
-// @Post()
-// async create(@Body() taskData: Task): Promise<Task> {
-//   return this.taskService.create(taskData);
-// }
-
-// @Put(':id')
-// async update(
-//   @Param('id') id: string,
-//   @Body() taskData: Task,
-// ): Promise<Task | undefined> {
-//   return this.taskService.update(+id, taskData);
-// }
-
-// @Delete('delete/:id')
-// async remove(@Query('id') id: string): Promise<void> {
-//   this.taskService.remove(+id);
-// }
