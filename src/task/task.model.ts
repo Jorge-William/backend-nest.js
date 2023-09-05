@@ -1,7 +1,7 @@
-export class Task {
-  constructor(
-    public id: number,
-    public title: string,
-    public completed: boolean,
-  ) {}
+// import { v4 as uuid } from 'uuid';
+
+export interface Task {
+  id: number;
+  title: string;
+  completed: boolean;
 }

@@ -1,33 +1,62 @@
 import { Injectable } from '@nestjs/common';
 import { Task } from './task.model';
+import { db } from 'database/fakeDatabase';
+import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class TaskService {
-  private tasks: Task[] = [];
-  create(task: Task): Task {
-    this.tasks.push(task);
-    return task;
-  }
+  private tasks: Task[] = db;
 
   findAll(): Task[] {
     return this.tasks;
   }
 
-  findOne(id: number): Task | undefined {
-    return this.tasks.find((task) => task.id === id);
+  async findOne(idNumber: number): Promise<Task[]> {
+    const data = this.tasks;
+
+    const taskFound = data.filter((task) => {
+      return task.id == idNumber;
+    });
+
+    if (!taskFound) {
+      throw new NotFoundException();
+    }
+    return taskFound;
+  }
+
+  create(task: Task): Task {
+    const data = this.tasks;
+
+    task.id = data.length + 1;
+    this.tasks.push(task);
+    return task;
   }
 
   update(id: number, updatedTask: Task): Task | undefined {
-    const taskIndex = this.tasks.findIndex((task) => task.id === id);
+    console.log(id);
+    console.log(updatedTask);
+
+    const taskIndex = this.tasks.findIndex((task) => task.id == id);
     if (taskIndex === -1) {
       return undefined;
     }
 
-    this.tasks[taskIndex] = updatedTask;
-    return updatedTask;
+    const updatedTaskWithExistingProperties = {
+      ...this.tasks[taskIndex],
+      ...updatedTask,
+    };
+
+    this.tasks[taskIndex] = updatedTaskWithExistingProperties;
+
+    return updatedTaskWithExistingProperties;
   }
 
-  remove(id: number): void {
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+  remove(idNumber: number): void {
+    const data = this.tasks;
+
+    const result = data.filter((obj) => {
+      return obj.id != idNumber;
+    });
+    this.tasks = result;
   }
 }

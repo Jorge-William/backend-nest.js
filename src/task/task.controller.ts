@@ -2,16 +2,16 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
-  Param,
+  Query,
   Body,
+  Patch,
 } from '@nestjs/common';
 
 import { TaskService } from './task.service';
 import { Task } from './task.model';
 
-@Controller('tasks')
+@Controller()
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
@@ -19,10 +19,9 @@ export class TaskController {
   async findAll(): Promise<Task[]> {
     return this.taskService.findAll();
   }
-
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Task | undefined> {
-    return this.taskService.findOne(+id);
+  async findOne(@Query('id') id: number): Promise<Task[]> {
+    return await this.taskService.findOne(id);
   }
 
   @Post()
@@ -30,16 +29,16 @@ export class TaskController {
     return this.taskService.create(taskData);
   }
 
-  @Put(':id')
+  @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Query('id') id: number,
     @Body() taskData: Task,
   ): Promise<Task> | undefined {
-    return this.taskService.update(+id, taskData);
+    return this.taskService.update(id, taskData);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
-    this.taskService.remove(+id);
+  async remove(@Query('id') id: number): Promise<void> {
+    this.taskService.remove(id);
   }
 }
