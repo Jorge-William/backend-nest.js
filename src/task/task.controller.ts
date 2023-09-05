@@ -4,26 +4,26 @@ import {
   Post,
   Put,
   Delete,
-  Param,
+  Query,
   Body,
 } from '@nestjs/common';
 
 import { TaskService } from './task.service';
 import { Task } from './task.model';
 
-@Controller('tasks')
+@Controller()
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
-
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Task | undefined> {
-    console.log(id);
-    return this.taskService.findOne(id);
-  }
 
   @Get()
   async findAll(): Promise<Task[]> {
     return this.taskService.findAll();
+  }
+  @Get(':id')
+  async findOne(@Query('id') id: number): Promise<Task[]> {
+    console.log(typeof id);
+
+    return await this.taskService.findOne(id);
   }
 
   @Post()
@@ -33,14 +33,45 @@ export class TaskController {
 
   @Put(':id')
   async update(
-    @Param('id') id: string,
+    @Query('id') id: number,
     @Body() taskData: Task,
   ): Promise<Task> | undefined {
     return this.taskService.update(id, taskData);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
+  async remove(@Query('id') id: number): Promise<void> {
     this.taskService.remove(id);
   }
 }
+
+// @Get(':id')
+// async findOne(@Query('id') id: string): Promise<Task | undefined> {
+//   console.log('oi');
+
+//   return this.taskService.findOne(+id);
+// }
+
+// @Get('/all')
+// async findAll(): Promise<Task[]> {
+//   console.log('Aqui');
+
+//   return this.taskService.findAll();
+// }
+// @Post()
+// async create(@Body() taskData: Task): Promise<Task> {
+//   return this.taskService.create(taskData);
+// }
+
+// @Put(':id')
+// async update(
+//   @Param('id') id: string,
+//   @Body() taskData: Task,
+// ): Promise<Task | undefined> {
+//   return this.taskService.update(+id, taskData);
+// }
+
+// @Delete('delete/:id')
+// async remove(@Query('id') id: string): Promise<void> {
+//   this.taskService.remove(+id);
+// }
