@@ -42,7 +42,15 @@ export class TaskService {
     return updatedTask;
   }
 
-  remove(id: number): void {
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+  remove(idNumber: number): void {
+    const data = this.tasks;
+
+    const result = data.filter((obj) => {
+      return obj.id != idNumber;
+    });
+    this.tasks = result;
+    console.log();
+
+    // this.tasks = data.pop((task) => task.id !== id);
   }
 }
