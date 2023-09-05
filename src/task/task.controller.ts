@@ -34,6 +34,10 @@ export class TaskController {
     @Query('id') id: number,
     @Body() taskData: Task,
   ): Promise<Task> | undefined {
+    console.log(id);
+    console.log('oi');
+    console.log(taskData);
+
     return this.taskService.update(id, taskData);
   }
 
